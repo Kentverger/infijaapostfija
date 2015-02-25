@@ -12,22 +12,22 @@ describe Converter do
 		result = converter.convert("a*b")
 		result.should be == "ab*"
 	end
-	it "convert a/b to ab/" do
+	it "convert a|b to ab|" do
 		converter = Converter.new
 		result = converter.convert("a|b")
 		result.should be == "ab|"
 	end
-	it "convert a-b to ab-" do
+	it "convert a?b to ab?" do
 		converter = Converter.new
 		result = converter.convert("a?b")
 		result.should be == "ab?"
 	end
-	it "convert a-b+c to abc+-" do
+	it "convert a*b|c to ab*c|" do
 		converter = Converter.new
 		result = converter.convert("a*b|c")
 		result.should be == "ab*c|"
 	end
-	it "convert 2*b+c/d to 2b*cd/+" do
+	it "convert 2*b|c.d to 2b*cd.|" do
 		converter = Converter.new
 		result = converter.convert("2*b|c.d")
 		result.should be == "2b*cd.|"

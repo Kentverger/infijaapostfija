@@ -1,4 +1,6 @@
-a+b,ab+,ab+,OK
-a-b,ab-,ab-,OK
-a-b+c,abc+-,abc+-,OK
-2*b+c/d,2b*cd/+,2b*cd/+,OK
+a+b,ab+
+a*b,ab*
+a|b,ab|
+a?b,ab?
+a*b|c,ab*c|
+2*b|c.d,2b*cd.|
