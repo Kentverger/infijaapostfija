@@ -48,25 +48,30 @@ class Converter
 	end
 
 	def readAndConvert( file )
-		tmp = true
-		file_CSV = CSV.read(file)
-		file_CSV.each do |row|
-			result = convert(row[0])
-			if result != row[1]
-				row.push(result)
-				row.push("FAIL")
-				tmp = false
-			else
-				row.push(result)
-				row.push("OK")
-			end
-		end
-		puts file_CSV.inspect
-		CSV.open(file, "r+") do |csv|
+		if File.exist?(file)
+			file_CSV = CSV.read(file)
 			file_CSV.each do |row|
-				csv << row
+				if !row[3].kind_of? String 
+					result = convert(row[0])
+					if result != row[1]
+						row.push(result)
+						row.push("FAIL")
+					else
+						row.push(result)
+						row.push("OK")
+					end
+				else
+					return -1
+				end
 			end
+			CSV.open(file, "r+") do |csv|
+				file_CSV.each do |row|
+					csv << row
+				end
+			end
+			return true
+		else
+			return false
 		end
-		return tmp
 	end
 end

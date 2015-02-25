@@ -112,7 +112,7 @@ describe Converter do
 		importance = converter.important('/', '-')
 		importance.should == true
 	end
-	it "write on a the same file called input.csv with the result of the convertions"
+	it "write on a the same file called input.csv with the result of the convertions" do
 		converter = Converter.new
 		converted = converter.readAndConvert("input.csv")
 		tmp = true
@@ -123,11 +123,14 @@ describe Converter do
 		end
 		tmp.should == true
 	end
-	it "if the file has been used or tested it has to return -2"
-	it "if the file doesnt exist, should return -1"
-	it "if the converter or write fails must return false" do
+	it "if the file has been used or tested it has to return -1" do
 		converter = Converter.new
 		converted = converter.readAndConvert("input.csv")
+		converted.should == -1
+	end
+	it "if the file doesnt exist, should return false" do
+		converter = Converter.new
+		converted = converter.readAndConvert("lol.csv")
 		converted.should == false
 	end
 end

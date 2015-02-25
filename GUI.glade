@@ -15,10 +15,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">end</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <property name="margin_top">5</property>
-            <property name="margin_bottom">5</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
             <property name="hexpand">False</property>
             <property name="vexpand">False</property>
             <child>
@@ -132,6 +132,7 @@
                     <property name="receives_default">True</property>
                     <property name="relief">half</property>
                     <property name="xalign">0.50999999046325684</property>
+                    <signal name="clicked" handler="convert_file" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
