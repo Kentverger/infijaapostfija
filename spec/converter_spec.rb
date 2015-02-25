@@ -14,23 +14,23 @@ describe Converter do
 	end
 	it "convert a/b to ab/" do
 		converter = Converter.new
-		result = converter.convert("a/b")
-		result.should be == "ab/"
+		result = converter.convert("a|b")
+		result.should be == "ab|"
 	end
 	it "convert a-b to ab-" do
 		converter = Converter.new
-		result = converter.convert("a-b")
-		result.should be == "ab-"
+		result = converter.convert("a?b")
+		result.should be == "ab?"
 	end
 	it "convert a-b+c to abc+-" do
 		converter = Converter.new
-		result = converter.convert("a-b+c")
-		result.should be == "abc+-"
+		result = converter.convert("a*b|c")
+		result.should be == "ab*c|"
 	end
 	it "convert 2*b+c/d to 2b*cd/+" do
 		converter = Converter.new
-		result = converter.convert("2*b+c/d")
-		result.should be == "2b*cd/+"
+		result = converter.convert("2*b|c.d")
+		result.should be == "2b*cd.|"
 	end
 	it "check the importance of + versus *" do
 		converter = Converter.new
@@ -112,6 +112,138 @@ describe Converter do
 		importance = converter.important('/', '-')
 		importance.should == true
 	end
+
+	it "chec the importance of * vs +" do
+		converter = Converter.new
+		importance = converter.important2('*', '+')
+		importance.should  == -1
+	end
+	it "chec the importance of * vs ?" do
+		converter = Converter.new
+		importance = converter.important2('*', '?')
+		importance.should  == -1
+	end
+	it "chec the importance of * vs *" do
+		converter = Converter.new
+		importance = converter.important2('*', '*')
+		importance.should  == -1
+	end
+	it "chec the importance of * vs ." do
+		converter = Converter.new
+		importance = converter.important2('*', '.')
+		importance.should  == true
+	end
+	it "chec the importance of * vs |" do
+		converter = Converter.new
+		importance = converter.important2('*', '|')
+		importance.should  == true
+	end
+
+	it "chec the importance of + vs +" do
+		converter = Converter.new
+		importance = converter.important2('+', '+')
+		importance.should  == -1
+	end
+	it "chec the importance of + vs ?" do
+		converter = Converter.new
+		importance = converter.important2('+', '?')
+		importance.should  == -1
+	end
+	it "chec the importance of + vs *" do
+		converter = Converter.new
+		importance = converter.important2('+', '*')
+		importance.should  == -1
+	end
+	it "chec the importance of + vs ." do
+		converter = Converter.new
+		importance = converter.important2('+', '.')
+		importance.should  == true
+	end
+	it "chec the importance of + vs |" do
+		converter = Converter.new
+		importance = converter.important2('+', '|')
+		importance.should  == true
+	end
+
+	it "chec the importance of ? vs +" do
+		converter = Converter.new
+		importance = converter.important2('?', '+')
+		importance.should  == -1
+	end
+	it "chec the importance of ? vs ?" do
+		converter = Converter.new
+		importance = converter.important2('?', '?')
+		importance.should  == -1
+	end
+	it "chec the importance of ? vs *" do
+		converter = Converter.new
+		importance = converter.important2('?', '*')
+		importance.should  == -1
+	end
+	it "chec the importance of ? vs ." do
+		converter = Converter.new
+		importance = converter.important2('?', '.')
+		importance.should  == true
+	end
+	it "chec the importance of ? vs |" do
+		converter = Converter.new
+		importance = converter.important2('?', '|')
+		importance.should  == true
+	end
+
+	it "chec the importance of . vs +" do
+		converter = Converter.new
+		importance = converter.important2('.', '+')
+		importance.should  == false
+	end
+	it "chec the importance of . vs ?" do
+		converter = Converter.new
+		importance = converter.important2('.', '?')
+		importance.should  == false
+	end
+	it "chec the importance of . vs *" do
+		converter = Converter.new
+		importance = converter.important2('.', '*')
+		importance.should  == false
+	end
+	it "chec the importance of . vs ." do
+		converter = Converter.new
+		importance = converter.important2('.', '.')
+		importance.should  == -1
+	end
+	it "chec the importance of . vs |" do
+		converter = Converter.new
+		importance = converter.important2('.', '|')
+		importance.should  == true
+	end
+
+	it "chec the importance of | vs +" do
+		converter = Converter.new
+		importance = converter.important2('|', '+')
+		importance.should  == false
+	end
+	it "chec the importance of | vs ?" do
+		converter = Converter.new
+		importance = converter.important2('|', '?')
+		importance.should  == false
+	end
+	it "chec the importance of | vs *" do
+		converter = Converter.new
+		importance = converter.important2('|', '*')
+		importance.should  == false
+	end
+	it "chec the importance of | vs ." do
+		converter = Converter.new
+		importance = converter.important2('|', '.')
+		importance.should  == false
+	end
+	it "chec the importance of | vs |" do
+		converter = Converter.new
+		importance = converter.important2('|', '|')
+		importance.should  == -1
+	end
+
+
 	it "write on a the same file called input.csv with the result of the convertions" do
 		converter = Converter.new
 		converted = converter.readAndConvert("input.csv")

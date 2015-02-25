@@ -7,15 +7,15 @@ class Converter
 		tmp = ''
 		stack = []
 		chars.each do |token|
-			if token == '+' or token == '*' or token == '/' or token == '-'
+			if token == '+' or token == '*' or token == '?' or token == '.' or token == '|'
 				if stack.empty?
 					stack.push(token)
 				else
 					# Si es mas importante el token etonces lo añade a la pila
-					if important(token, stack.last)
+					if important2(token, stack.last)
 						stack.push(token)
 					# Si los dos tienen la misma importancia, entonces los intercambia en la pila
-					elsif important(token, stack.last) == -1
+					elsif important2(token, stack.last) == -1
 						lastItem = stack.pop
 						stack.push(token)
 						stack.push(lastItem)
@@ -44,6 +44,23 @@ class Converter
 			return false
 		elsif ( element == '*' or element == '/' ) and ( element2 == '+' or element2 == '-' )
 			return true
+		end
+	end
+
+	def important2(element, element2)
+		if ( element == element2 ) or 
+			( ( element == '*' or element == '+' or element == '?') and 
+			( element2 == '*' or element2 == '+' or element2 == '?' ) )
+			return -1
+		elsif ( element == '.' or element == '|' ) and 
+			( element2 == '*' or element2 == '+' or element2 == '?' ) or
+			( element == '|' and element2 == '.' )
+			return false
+		elsif ( ( element == '*' or element == '+' or element == '?' ) and 
+			( element2 == '.' or element2 == '|' ) ) or 
+			(element == '.' and element2 == '|')
+			return true
+
 		end
 	end
 
