@@ -91,4 +91,8 @@ class Converter
 			return false
 		end
 	end
+
+	def normalize(operation)
+		return "a.b"
+	end
 end

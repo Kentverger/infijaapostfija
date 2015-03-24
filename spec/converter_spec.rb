@@ -265,4 +265,31 @@ describe Converter do
 		converted = converter.readAndConvert("lol.csv")
 		converted.should == false
 	end
+
+	it "has to convert ab to a.b" do
+		converter = Converter.new
+		result = converter.normalize("ab")
+		result.should be == "a.b"
+	end
+	it "has to convert a+b to a+.b" do
+		converter = Converter.new
+		result = converter.normalize("a+b")
+		result.should be == "a+.b"
+	end
+	it "has to convert a*b to a*.b" do
+		converter = Converter.new
+		result = converter.normalize("a*b")
+		result.should be == "a*.b"
+	end
+	it "has to convert a?b to a?.b" do
+		converter = Converter.new
+		result = converter.normalize("a?b")
+		result.should be == "a?.b"
+	end
+	it "has to convert d+aa|c to d+.a.a|c" do
+		converter = Converter.new
+		result = converter.normalize("d+aa|c")
+		result.should be == "d+.a.a|c"
+		
+	end
 end
