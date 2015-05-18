@@ -93,6 +93,83 @@ class Converter
 	end
 
 	def normalize(operation)
-		return "a.b"
+		operation = operation.gsub(/([a-zA-Z]\+)|([a-zA-Z]\*)|([a-zA-Z]\?)/,'\&.')
+		return operation
+	end
+
+	def binary(operator)
+		case operator
+			when '.'
+				return true
+			when '|'
+				return true
+			when '*'
+				return false
+			when '?'
+				return false
+			when '+'
+				return false
+			else 
+				return -1
+		end						
+	end
+	def treelizer(operation)
+		chars = operation.split(//)
+		stack = []
+		result = ''
+		isNotBinary = false
+
+		chars.each do |token|
+			case token
+				when '.'
+					if !isNotBinary
+						lastItem = stack.pop
+						stack.push(token)
+						stack.push(lastItem)
+					else
+						lastItem = stack.pop
+						lastLastItem = stack.pop
+						stack.push(token)
+						stack.push(lastLastItem)
+						stack.push(lastItem)
+						isNotBinary = false
+					end
+				when '|'
+					stack.unshift(token)
+					#if !isNotBinary
+					#	lastItem = stack.pop
+					#	stack.push(token)
+					#	stack.push(lastItem)
+					#else
+						#lastItem = stack.pop
+						#lastLastItem = stack.pop
+						#stack.push(token)
+						#stack.push(lastLastItem)
+						#stack.push(lastItem)
+					isNotBinary = false
+					#end
+				when '*'
+					lastItem = stack.pop
+					stack.push(token)
+					stack.push(lastItem)
+					isNotBinary = true
+				when '?'
+					lastItem = stack.pop
+					stack.push(token)
+					stack.push(lastItem)
+					isNotBinary = true
+				when '+'
+					lastItem = stack.pop
+					stack.push(token)
+					stack.push(lastItem)
+					isNotBinary = true
+				else 
+					stack.push(token)
+			end	
+		end
+		stack.each do |element|
+			result = result + element
+		end
+		return result
 	end
 end

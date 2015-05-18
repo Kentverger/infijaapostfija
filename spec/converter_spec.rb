@@ -286,10 +286,104 @@ describe Converter do
 		result = converter.normalize("a?b")
 		result.should be == "a?.b"
 	end
-	it "has to convert d+aa|c to d+.a.a|c" do
+	it "has to convert a|b to a|b" do
 		converter = Converter.new
-		result = converter.normalize("d+aa|c")
-		result.should be == "d+.a.a|c"
+		result = converter.normalize("a|b")
+		result.should be == "a|b"
+	end
+	it "has to convert d+a|c to d+.a|c" do
+		converter = Converter.new
+		result = converter.normalize("d+a|c")
+		result.should be == "d+.a|c"
 		
 	end
+
+	it "has to check if * is binary operator" do
+		converter = Converter.new
+		importance = converter.binary('*')
+		importance.should  == false
+	end	
+	it "has to check if + is binary operator" do
+		converter = Converter.new
+		importance = converter.binary('+')
+		importance.should  == false
+	end
+	it "has to check if . is binary operator" do
+		converter = Converter.new
+		importance = converter.binary('.')
+		importance.should  == true
+	end
+	it "has to check if | is binary operator" do
+		converter = Converter.new
+		importance = converter.binary('|')
+		importance.should  == true
+	end
+	it "has to check if ? is binary operator" do
+		converter = Converter.new
+		importance = converter.binary('?')
+		importance.should  == false
+	end
+
+
+	it "has to convert a.b to .ab" do
+		converter = Converter.new
+		result = converter.treelizer("a.b")
+		result.should be == ".ab"
+	end
+
+	it "has to convert a|b to |ab" do
+		converter = Converter.new
+		result = converter.treelizer("a|b")
+		result.should be == "|ab"
+	end
+
+	it "has to convert a+ to +a" do
+		converter = Converter.new
+		result = converter.treelizer("a+")
+		result.should be == "+a"
+	end
+
+	it "has to convert a* to *a" do
+		converter = Converter.new
+		result = converter.treelizer("a*")
+		result.should be == "*a"
+	end
+
+	it "has to convert a? to ?a" do
+		converter = Converter.new
+		result = converter.treelizer("a?")
+		result.should be == "?a"
+	end
+	it "has to convert a|b*.c to |a.*bc" do
+		converter = Converter.new
+		result = converter.treelizer("a|b*.c")
+		result.should be == "|a.*bc"
+	end	
+	it "has to convert a+.b* to .+a*b" do
+		converter = Converter.new
+		result = converter.treelizer("a+.b*")
+		result.should be == ".+a*b"
+	end
+
+	it "has to convert a.b|a+.c? to |.ab.+a?c" do
+		converter = Converter.new
+		result = converter.treelizer("a.b|a+.c?")
+		result.should be == "|.ab.+a?c"
+	end
+	it "has to convert b?.c to .?bc" do
+		converter = Converter.new
+		result = converter.treelizer("b?.c")
+		result.should be == ".?bc"
+	end
+	it "has to convert c+.a to .+ca" do
+		converter = Converter.new
+		result = converter.treelizer("c+.a")
+		result.should be == ".+ca"
+	end
+	it "has to convert b?.c|c+.a to |.?bc.+ca" do
+		converter = Converter.new
+		result = converter.treelizer("b?.c|c+.a")
+		result.should be == "|.?bc.+ca"
+	end
+
 end

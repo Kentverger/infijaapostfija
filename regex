@@ -1,0 +1,10 @@
+<(.*?)> #saca los nodos
+
+(>.*?<)	#saca las transiciones completas
+
+([^;<>]+) #saca las transiciones individuales
+
+<A,IN>a,B<B,N>b,C;c,D<c,N>b,C;c,D<D,A>
+
+([a-zA-Z\+])
+[a-zA-Z][^\+\?\*\|]
